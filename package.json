@@ -1,0 +1,54 @@
+{
+  "name": "visual-plumes",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/icons-material": "latest",
+    "@mui/material": "^5.12.2",
+    "@mui/x-data-grid": "6.2.0",
+    "@types/node": "18.16.0",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.1",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.3.1",
+    "file-saver": "latest",
+    "next": "13.3.1",
+    "papaparse": "latest",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "recharts": "latest",
+    "recharts-to-png": "latest",
+    "tailwindcss": "3.3.1",
+    "typescript": "5.0.4"
+  },
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint"
+  },
+  "proxy": "http://node-api:3080",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.6",
+    "@types/papaparse": "^5.3.14"
+  }
+}
