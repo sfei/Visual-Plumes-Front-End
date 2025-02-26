@@ -2,8 +2,10 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { FormControl } from '@mui/material';
 
-// type Props = {};
+const inputMaxWidth = 95;
+const ambientMargins = '0px';
 
 interface OptionProps {
   profileID: number;
@@ -22,19 +24,21 @@ const AmbientStoreOption: React.FC<OptionProps> = ({ profileID, setParameterFunc
 
   return (
     <Grid item xs={1}>
-      <Select
-        inputProps={{ 'aria-label': 'Without label' }}
-        labelId={`ambient-option-${field}-${subfield}-label`}
-        id={`ambient-option-${field}-${subfield}-select`}
-        defaultValue={defaultVal}
-        onChange={handleSelection}
-        value = {val}
-        fullWidth={true}
-      >
-        {optionVals.map((val:string)=>{
-            return <MenuItem value={val} key={val}>{val}</MenuItem>
-        })}
-      </Select>
+      <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins }}>
+        <Select
+          inputProps={{ 'aria-label': 'Without label' }}
+          labelId={`ambient-option-${field}-${subfield}-label`}
+          id={`ambient-option-${field}-${subfield}-select`}
+          defaultValue={defaultVal}
+          onChange={handleSelection}
+          value = {val}
+          fullWidth={true}
+        >
+          {optionVals.map((val:string)=>{
+              return <MenuItem value={val} key={val}>{val}</MenuItem>
+          })}
+        </Select>
+      </FormControl>
     </Grid>
   )
 }

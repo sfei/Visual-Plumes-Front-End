@@ -1,5 +1,5 @@
 import { useAppContext } from '@/context/state';
-import { Select, MenuItem, Typography, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Select, MenuItem, Typography, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card, CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import * as React from 'react';
@@ -7,6 +7,7 @@ import Papa from 'papaparse';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
+const diffTSPaddingLeft = "6px !important";
 type Props = {}
 
 const DiffuserTimeSeries: React.FC<Props> = ({}) => {
@@ -54,7 +55,12 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         newDiffuserTable['store']['start_time']['isEnabled'] = true;
         newDiffuserTable['store']['end_time']['isEnabled'] = true;
         newDiffuserTable['store']['time_increment']['isEnabled'] = true;
-        newDiffuserTable['store'][field]['isEnabled'] = false;
+        if (field==='effluent_concentration'){
+          newDiffuserTable['store']['effluent_conc']['isEnabled'] = false;
+        } else {
+          newDiffuserTable['store'][field]['isEnabled'] = false;
+        }
+        // newDiffuserTable['store'][field]['isEnabled'] = false;
         setDiffuserTable(newDiffuserTable);
         setDiffuserTimeSeries(newDiffuserTimeSeries);
       });
@@ -188,9 +194,16 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
 
   return (
     <div style={{width:'100%', marginTop: '1.5em'}}>
-      <Typography variant="h5" color="text.primary" gutterBottom>
+      <Typography variant="h5" color="text.primary" gutterBottom sx={{marginTop: '2em'}}>
         Diffuser Time Series Files (optional)
       </Typography>
+      <Card elevation={0} sx={{marginBottom:"2em", marginTop:"2em", border:1, borderColor:"grey.400"}}>
+        <CardContent>
+          <Typography paragraph  sx={{fontSize:"0.8rem"}}>
+            <p>Time Series data must have at least one valid row, with each subsequent row being the value after one time increment. The time increment and units for time series data must be supplied in the UI and are not needed to be written in the time series file.</p>
+          </Typography>
+        </CardContent>
+      </Card>
       <Grid
         container
         justifyContent="flex-start"
@@ -199,27 +212,27 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         sx={{marginTop:"1em"}}
       >
         <Grid item xs={2}></Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
           <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'1.5rem'}}>
             Port Depth
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
           <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'1.5rem'}}>
             Effluent Flow
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
           <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'1.5rem'}}>
             Effluent Salinity
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
           <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'1.5rem'}}>
             Effluent Temp
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
           <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'1.5rem'}}>
             Effluent Concentration
           </Typography>
@@ -231,7 +244,7 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         alignItems="center"
         spacing={1}
       >
-        <Grid item xs={2}></Grid>
+        <Grid item xs={2} sx={{paddingLeft:diffTSPaddingLeft}}></Grid>
         {Object.keys(diffuserTimeSeries).map((field:any,index:number) => {
           return (
             <Grid item key={field} xs={2} sx={{paddingTop:"1em",paddingBottom:"1em"}}>
@@ -256,7 +269,7 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         <Grid item xs={2}></Grid>
         {Object.keys(diffuserTimeSeries).map((field:any,index:number) => {
           return (
-            <Grid item key={field} xs={2}>
+            <Grid item key={field} xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
               {diffuserTimeSeries[field]['filename']}
             </Grid>
           )
@@ -273,7 +286,7 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         </Grid>
         {Object.keys(diffuserTimeSeries).map((field:any,index:number) => {
           return (
-            <Grid item key={field} xs={2}>
+            <Grid item key={field} xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
               {getDiffuserTSIncrement(field)}
             </Grid>
           )
@@ -290,7 +303,7 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         </Grid>
         {Object.keys(diffuserTimeSeries).map((field:any,index:number) => {
           return (
-            <Grid item key={field} xs={2}>
+            <Grid item key={field} xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
               <TextField
                   id="outlined-number"
                   type={(field === 'port_alias') ? "string" : "number"}
@@ -316,7 +329,7 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         </Grid>
         {Object.keys(diffuserTimeSeries).map((field:any,index:number) => {
           return (
-            <Grid item key={field} xs={2} sx={{width: 170}}>
+            <Grid item key={field} xs={2} sx={{width: 170, paddingLeft:diffTSPaddingLeft}}>
               {getDiffuserTSMeasurementUnit(field)}
             </Grid>
           )
@@ -334,7 +347,7 @@ const DiffuserTimeSeries: React.FC<Props> = ({}) => {
         </Grid>
         {Object.keys(diffuserTimeSeries).map((field:string) => {
           return (
-            <Grid item key={field} xs={2}>
+            <Grid item key={field} xs={2} sx={{paddingLeft:diffTSPaddingLeft}}>
               {getClearDiffTSFileButton(field)}
               <Dialog
                 open={open}

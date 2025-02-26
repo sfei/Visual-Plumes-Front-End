@@ -1,4 +1,4 @@
-import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, TextField } from '@mui/material';
+import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, MenuItem, TextField, Card, CardContent } from '@mui/material';
 import * as React from 'react';
 import AmbientTimeSeriesEntry from './AmbientTimeSeriesEntry';
 import { useAppContext } from '@/context/state';
@@ -7,6 +7,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Papa from 'papaparse';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
+
+const diffTSPaddingLeft = "6px !important";
 
 type Props = {}
 
@@ -158,7 +160,17 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
 
   return (
     <div style={{width:'100%', marginTop:'1em'}}>
-
+      <Typography variant="h5" color="text.primary" gutterBottom sx={{marginTop:'2em'}}>
+        Ambient Time Series Files (optional)
+      </Typography>
+      <Card elevation={0} sx={{marginBottom:"2em", marginTop:"2em", border:1, borderColor:"grey.400"}}>
+        <CardContent>
+          <Typography sx={{fontSize:"0.8rem"}}>
+            <p>Time series data must have at least two rows. The first row defines the depth layers, listing the depth (or height) values by column. All subsequent rows constitute the values, with each row being the value after one time increment and each column the value at each depth layer. The <em>Time Increment</em>, <em>Depth or Height</em>, <em>Depth Units</em>, and <em>Measurement Units</em> for the Time Series table must be selected in the UI and are not determined by the time series file.</p>
+          </Typography>
+        </CardContent>
+      </Card>
+      
       <Grid
         container
         justifyContent="flex-start"
@@ -170,7 +182,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid key={field} item xs={2}></Grid>)
           } else {
             return (
-              <Grid item key={field} xs={1}>
+              <Grid item key={field} xs={1} sx={{paddingLeft:diffTSPaddingLeft}}>
                 <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'1.5rem'}}>
                   {ambientFiles[field].label}
                 </Typography>
@@ -191,7 +203,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}></Grid>)
           } else {
             return (
-              <Grid item xs={1} key={field} sx={{paddingTop:"1em",paddingBottom:"1em",marginTop:"1em"}}>
+              <Grid item xs={1} key={field} sx={{paddingTop:"1em",paddingBottom:"1em",marginTop:"1em", paddingLeft:diffTSPaddingLeft}}>
                 <Button 
                   sx={{float:"right"}} 
                   component="label" 
@@ -218,7 +230,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}>Filename</Grid>)
           } else {
             return (
-              <Grid item key={field} xs={1}>{ambientFiles[field]['filename']}</Grid>
+              <Grid item key={field} xs={1} sx={{paddingLeft:diffTSPaddingLeft}}>{ambientFiles[field]['filename']}</Grid>
             )
           }
         })}
@@ -235,7 +247,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}>Depth or height</Grid>)
           } else {
             return (
-              <Grid item key={field} xs={1}>
+              <Grid item key={field} xs={1} sx={{paddingLeft:diffTSPaddingLeft}}>
                 <Select
                   inputProps={{ 'aria-label': 'Without label' }}
                   labelId="demo-simple-select-label"
@@ -264,7 +276,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}>Depth / height units</Grid>)
           } else {
             return (
-              <Grid item key={field} xs={1}>
+              <Grid item key={field} xs={1} sx={{paddingLeft:diffTSPaddingLeft}}>
                 <Select
                   inputProps={{ 'aria-label': 'Without label' }}
                   labelId="demo-simple-select-label"
@@ -293,7 +305,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}>Increment (hrs)</Grid>)
           } else {
             return (
-              <Grid item key={field} xs={1}>
+              <Grid item key={field} xs={1} sx={{paddingLeft:diffTSPaddingLeft}}>
                 {getAmbientTSIncrement(field)}
                 
               </Grid>
@@ -313,7 +325,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}>Cycling period (hrs)</Grid>)
           } else {
             return (
-              <Grid item xs={1} key={field} sx={{width: 150}}>
+              <Grid item xs={1} key={field} sx={{width: 150, paddingLeft:diffTSPaddingLeft}}>
                 <TextField
                   id="outlined-number"
                   type={(field === 'port_alias') ? "string" : "number"}
@@ -343,7 +355,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
             return (<Grid item key={field} xs={2}>Measurement unit</Grid>)
           } else {
             return (
-              <Grid item key={field} xs={1}>
+              <Grid item key={field} xs={1} sx={{paddingLeft:diffTSPaddingLeft}}>
                 <Select
                     inputProps = {{ 'aria-label': 'Without label' }}
                     labelId    = "demo-simple-select-label"
@@ -375,7 +387,7 @@ const AmbientTimeSeries: React.FC<Props> = ({ }) => {
           } else {
             // console.log(`Amb ts clear btn field: ${field}`);
             return (
-              <Grid item xs={1} key={field} sx={{width: 150}}>
+              <Grid item xs={1} key={field} sx={{width: 150, paddingLeft:diffTSPaddingLeft}}>
                 {getClearAmbTSFileButton(field)}
                 <Dialog
                   open={open}

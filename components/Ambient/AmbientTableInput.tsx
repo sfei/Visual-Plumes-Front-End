@@ -19,6 +19,8 @@ import { useAppContext } from '../../context/state';
 import AmbientTableInputRow from './AmbientTableInputRow';
 import { Box, Grid, Paper } from '@mui/material';
 
+const numCols = 11;
+
 type Props = {
   'addRowFunc': any,
   'id': number,
@@ -30,7 +32,6 @@ const AmbientTableInput2: React.FC<Props> = ({id, addRowFunc}) => {
 
   return (
     <Box style={{width: ambientWidth}}>
-      <br/>
       {ambientStore.tabs[id].data.map((record:any) => {
         return(
           <AmbientTableInputRow 
@@ -41,11 +42,12 @@ const AmbientTableInput2: React.FC<Props> = ({id, addRowFunc}) => {
           />
         )
       })}
-      <Box sx={{ width: '100%', marginBottom: 5 }}>
+      <Box sx={{ width: '100%', marginBottom: 0, marginTop: 1 }}>
           <Grid
             container
             justifyContent="center"
             spacing={1}
+            columns={numCols}
           >
             <Grid item xs={12} justifyContent="center">
               <Button 

@@ -42,7 +42,7 @@ import { purple } from '@mui/material/colors';
 
 const drawerWidth = 240;
 
-const pages = ['Model Selection', 'Diffuser, Flow, Mixing Zone Inputs', 'Ambient Values', 'Run Analysis', 'View Graph Results', 'View Text Results'];
+const pages = ['About', 'Model Selection', 'Diffuser, Flow, Mixing Zone Inputs', 'Ambient Values', 'Run Analysis', 'View Graph Results', 'View Text Results'];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -128,7 +128,7 @@ export default function PersistentDrawerLeft() {
 
 
   const [open, setOpen] = React.useState(true);
-  const [page, setPage] = React.useState("Main");
+  const [page, setPage] = React.useState("About");
 
   const { hasAnalysisData, setHasAnalysisData } = useAppContext();
 
@@ -206,9 +206,9 @@ export default function PersistentDrawerLeft() {
                 <MenuIcon />
               </IconButton>
 
-              {(page == "Main") &&
+              {(page == "About") &&
                 <Typography variant="h4" noWrap component="div" sx={{ width: "100%" }}>
-                  Visual Plumes: Landing Page
+                  Visual Plumes: About
                 </Typography>}
               {(page === "Model Selection") &&
                 <Typography variant="h4" noWrap component="div" sx={{ width: "100%" }}>
@@ -278,7 +278,7 @@ export default function PersistentDrawerLeft() {
           {/* <Main open={open} sx={{ width: `80%` }}> */}
           <Main open={open} sx={{ width: `calc(100% - ${drawerWidth}px)` }}>
             <DrawerHeader />
-            {(page === "Main") && <LandingPage />}
+            {(page === "About") && <LandingPage />}
             {(page === "Model Selection") && <ModelSelect />}
             {(page === "Diffuser, Flow, Mixing Zone Inputs") && <Diffuser />}
             {(page === "Ambient Values") && <Ambient />}

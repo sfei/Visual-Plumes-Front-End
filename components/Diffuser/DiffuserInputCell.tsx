@@ -2,7 +2,7 @@ import { useAppContext } from '@/context/state';
 import { FormControl, Grid, TextField } from '@mui/material';
 import * as React from 'react';
 
-const inputMaxWidth = 100;
+const inputMaxWidth = 70;
 
 /* Interface for input parameters */
 type Props = {
@@ -30,8 +30,10 @@ const InputCell: React.FC<Props> = ({recordId,field,val}) => {
   }
 
   return (
-      <FormControl sx={{ m: 1, width: inputMaxWidth }}>
+      <FormControl sx={{ m: 1, width: inputMaxWidth, margin:'0px 3px'  }}>
         <TextField
+          // error={false}
+          // helperText="Incorrect entry."
           id="outlined-number"
           type={(field === 'port_alias') ? "string" : "number"}
           fullWidth={true}
@@ -43,7 +45,6 @@ const InputCell: React.FC<Props> = ({recordId,field,val}) => {
           disabled={!diffuserTable.store[field]['isEnabled']}
         />
       </FormControl>
-      // </Grid>
   )
 
 }

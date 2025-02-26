@@ -63,7 +63,7 @@ const InputRow: React.FC<Props> = ({record, allowDelete}) => {
         color="error"
         disabled={!allowDelete}
       >
-        <HighlightOffIcon/>
+        <HighlightOffIcon sx={{width:"24px"}}/>
       </Button>
       {Object.entries(record).map(([key,value])=>{
         return (

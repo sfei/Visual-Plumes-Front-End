@@ -1,7 +1,7 @@
 import { SelectChangeEvent, Grid, Select, MenuItem, FormControl, Typography, Box } from '@mui/material';
 import * as React from 'react';
 
-const inputMaxWidth = 100;
+const inputMaxWidth = 70;
 
 interface OptionProps {
   label: string;
@@ -47,7 +47,7 @@ const DiffuserStoreOption: React.FC<OptionProps> = ({label, defaultVal, optionVa
     // <div style={{width:'110px'}}>
     // <div>
       // <Grid item xs={1} sx={{width:inputMaxWidth}}>
-        <FormControl sx={{ m: 1, width: inputMaxWidth }}>
+        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:'0px 3px' }}>
         {/* <FormControl sx={{ m: 1, minWidth: inputMaxWidth }}> */}
           <Typography variant="subtitle2" color="text.primary" sx={{minHeight:'2rem'}} gutterBottom>
             {label}

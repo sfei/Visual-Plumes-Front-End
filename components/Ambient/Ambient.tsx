@@ -4,7 +4,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid } from '@mui/material';
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, ThemeProvider } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
 
@@ -15,15 +15,16 @@ import Box from '@mui/material/Box';
 
 /* VP Components */
 import AmbientTableInput from './AmbientTableInput';
-// import AmbientTableOptions from './AmbientTableOptions';
-// import AmbientTableOptionsDG from './AmbientTableOptionsDG';
-// import AmbientTimeSeriesOld from './AmbientTimeSeriesOld';
 import AmbientTimeSeries from './AmbientTimeSeries';
 import AmbientStore from './AmbientStore';
 import { useAppContext } from '@/context/state';
+import { useTheme } from '@mui/material/styles';
 
-const rowSpacing = 2;
+const rowSpacing = 0;
 // const ambientWidth = 1900;
+const inputMaxWidth = 95;
+const ambientMargins = '0px';
+const numCols = 11;
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -194,11 +195,31 @@ const Ambient: React.FC<Props> = ({ }) => {
     )
   }
 
+  const tableTheme = useTheme();
+  tableTheme.typography.body1 = {
+    fontSize: '0.8rem'
+  }
+  tableTheme.typography.subtitle2 = {
+    fontSize: '0.8rem'
+  }
+
   return (
     <div style={{width:"100%"}}>
-      <Typography paragraph>
-        Enter ambient values here.
+      <Typography variant="h5" color="text.primary" gutterBottom>
+        Ambient Condition Values
       </Typography>
+      <Card elevation={0} sx={{marginBottom:"2em", marginTop:"2em", border:1, borderColor:"grey.400"}}>
+        <CardContent>
+          <Typography sx={{fontSize:"0.8rem"}}>
+            <p>At least one row of data is required in the Ambient Data Table. All rows must have the <em>Depth or Height</em> field populated with a valid number in order of increasing depth (or decreasing height).</p>
+            <p>Unless derived from the Time Series Table, all columns must have at least one valid value. Blank cells will be linearly interpolated if they fall between two specified values and will be extrapolated towards the surface or bottom as specified in the <em>Extrapolation (sfc)</em> and <em>(btm)</em> dropdowns.</p>
+            <p><em>Far Field</em> values are only required if <em>Brooks Far Field</em> is selected from the <em>Model Configuration</em> in the <em>Model Selection</em> page.</p>
+            <p>If any of the values are provided in the Time Series Table, then the corresponding value in the Ambient Table is not required.</p>
+            <p>Time series data must have at least two rows. The first row defines the depth layers, listing the depth (or height) values by column. All subsequent rows constitute the values, with each row being the value after one time increment and each column the value at each depth layer. The <em>Time Increment</em>, <em>Depth or Height</em>, <em>Depth Units</em>, and <em>Measurement Units</em> for the Time Series table must be selected in the UI and are not determined by the time series file.</p>
+          </Typography>
+        </CardContent>
+      </Card>
+      
       <Box sx={{ maxWidth: 1, overflow: 'scroll', maxHeight: '800px' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -210,81 +231,102 @@ const Ambient: React.FC<Props> = ({ }) => {
             <Tab label="+add" {...a11yProps(2)} onClick={addTab}/>
           </Tabs>
         </Box>
-
-        {ambientStore.tabs.map((profile:any, idx:number)=>{
-          return (
-            <TabPanel key={profile.id} value={value} index={idx}>
-               <div style={{width:ambientWidth, maxHeight: '800px'}}>
-                <Box sx={{ marginBottom: rowSpacing, width: ambientWidth, }}>
-                  <Grid
-                    container
-                    justifyContent="flex-start"
-                    spacing={1}
-                  >
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={1}>
-                      {getDepthOrHeightSelect(profile, idx)}
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Current Speed
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Current Direction
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Ambient Salinity
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Ambient Temperature
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Background Concentration
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Pollution Decay Rate
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Far Field Current Speed
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Far Field Current Direction
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Typography variant="subtitle2" color="text.primary" gutterBottom>
-                        Far Field Diff Coeff
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </div>
-              <AmbientStore id={idx} />
-              <Divider />
-              <AmbientTableInput 
-                id={idx}
-                addRowFunc={addAmbientInputRow} 
-              />
-              {getAmbProfileDeleteButton(profile.id)}
-              
-            </TabPanel>
-          )
-        })}
         
+        <ThemeProvider theme={tableTheme}>
+          {ambientStore.tabs.map((profile:any, idx:number)=>{
+            return (
+              <TabPanel key={profile.id} value={value} index={idx}>
+                <div style={{width:ambientWidth, maxHeight: '800px'}}>
+                  <Box sx={{ marginBottom: rowSpacing, width: ambientWidth}}>
+                    <Grid
+                      container
+                      justifyContent="flex-start"
+                      spacing={1}
+                      columns={numCols}
+                    >
+                      <Grid item xs={1}></Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          {getDepthOrHeightSelect(profile, idx)}
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Current Speed
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Current Direction
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Ambient Salinity
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Ambient Temperature
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Background Concentration
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Pollution Decay Rate
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Far Field Current Speed
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Far Field Current Direction
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <FormControl sx={{ m: 1, width: inputMaxWidth, margin:ambientMargins  }}>
+                          <Typography variant="subtitle2" color="text.primary" gutterBottom>
+                            Far Field Diff Coeff
+                          </Typography>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </div>
+                <AmbientStore id={idx} />
+                {/* <Divider /> */}
+                <AmbientTableInput 
+                  id={idx}
+                  addRowFunc={addAmbientInputRow} 
+                />
+                {getAmbProfileDeleteButton(profile.id)}
+              </TabPanel>
+            )
+          })}
+          </ThemeProvider>
       </Box>
       <Box sx={{ width: 1 }}>
         <AmbientTimeSeries></AmbientTimeSeries>

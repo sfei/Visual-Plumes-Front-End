@@ -9,7 +9,8 @@ const nextConfig = {
     return config
   },
 	env: {
-		API_URL: '[API URL, include http or https]/app'
+		API_URL: '[API URL, include http or https]/app',
+		// GA4_TRACKING: '[Uncomment and include GA4 code here]'
 	}
 }
 

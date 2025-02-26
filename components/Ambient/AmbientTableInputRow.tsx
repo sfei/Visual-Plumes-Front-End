@@ -10,6 +10,8 @@ import AmbientTableInputCell from './AmbientTableInputCell';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { useAppContext } from '@/context/state';
 
+const numCols = 11;
+
 type Props = {
   'record': any;
   'id': number;
@@ -58,6 +60,8 @@ const AmbientTableInputRow: React.FC<Props> = ({record, id, allowDelete}) => {
       container
       justifyContent="flex-start"
       spacing={1}
+      sx={{marginTop:"0em"}}
+      columns={numCols}
     >
       <Grid item xs={1}>
         {/* <Button 

@@ -238,7 +238,9 @@ const RunAnalysis: React.FC<Props> = () => {
   }
 
   const handleRunAnalysis = () => {
-    const csrftoken = getCookie('csrftoken');
+    // const csrftoken = getCookie('csrftoken');
+
+    setHasAnalysisData(false);
 
     /* Establish a new FormData instance */
     let formData = new FormData();
@@ -299,7 +301,7 @@ const RunAnalysis: React.FC<Props> = () => {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 sec timeout
+    const timeoutId = setTimeout(() => controller.abort(), 240000) // 240 sec timeout
 
     setErrorText(``);
     setHasAnalysisError(false);
@@ -317,13 +319,14 @@ const RunAnalysis: React.FC<Props> = () => {
         response => response.json()
       ).then(
         data => handleResultData(data)
-      ).catch(() => {
-        setErrorText(`Internal Server Error`);
+      ).catch((e) => {
+        setErrorText(`Run Analysis Error`);
+        console.log(`Run analysis exited with "${e}"`);
         setHasAnalysisError(true);
         setWaitingForAnalysisData(false);
       })
     } catch (e) {
-      setErrorText(`Internal Server Error`);
+      setErrorText(`Error connecting to API`);
       setHasAnalysisError(true);
       setWaitingForAnalysisData(false);
     }

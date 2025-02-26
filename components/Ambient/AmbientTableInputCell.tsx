@@ -2,6 +2,11 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField  from '@mui/material/TextField';
 import { useAppContext } from '@/context/state';
+import { FormControl } from '@mui/material';
+
+const inputMaxWidth = 95;
+const ambientMargins = '0px';
+const ambientInputPaddingTop = "0px !important";
 
 type Props = {
   'profileId': number,
@@ -28,14 +33,17 @@ const AmbientTableInputCell: React.FC<Props> = ({profileId,rowId,field,val}) => 
     setAmbientStore(newAmbientStore);
   }
   return (
-      <Grid item xs={1}>
-        <TextField
-          id="outlined-number"
-          type="number"
-          value={val}
-          onChange={updateAmbientInputVal}
-          disabled={(ambientFiles[field].file !== null)}
-        />
+      <Grid item xs={1} sx={{paddingTop:ambientInputPaddingTop}}>
+        <FormControl sx={{ width: inputMaxWidth, margin:ambientMargins  }}>
+          <TextField
+            id="outlined-number"
+            type="number"
+            value={val}
+            onChange={updateAmbientInputVal}
+            disabled={(ambientFiles[field].file !== null)}
+            // sx={{ margin:'4px'  }}
+          />
+        </FormControl>
       </Grid>
   )
 }

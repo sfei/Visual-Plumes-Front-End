@@ -16,11 +16,12 @@ import {
   GridRowModel,
 } from '@mui/x-data-grid';
 import { useAppContext } from '../../context/state';
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, ThemeProvider } from '@mui/material';
 import InputRow from './DiffuserInputRow';
 import DiffuserStoreOption from './DiffuserStoreOption';
+import { useTheme } from '@mui/material/styles';
 
-const rowSpacing = 2;
+const rowSpacing = 1;
 const numCols = 19;
 
 
@@ -135,53 +136,66 @@ const DiffuserTable: React.FC<Props> = ({ tableWidth }) => {
     }
   }
 
+  const tableTheme = useTheme();
+  tableTheme.typography.body1 = {
+    fontSize: '0.8rem'
+  }
+  tableTheme.typography.subtitle2 = {
+    fontSize: '0.8rem'
+  }
+  // theme.components.MuiFormControl = {
+  //   margin: '5px'
+  // }
+  
   return (
     <div style={{width:tableWidth}}>
-      <Box sx={{ width: '100%', marginBottom: rowSpacing, marginLeft:'64px' }}>
-        <Grid
-          container
-          columns={numCols}
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={1}
-        >
-          {Object.entries(diffuserTable.store).map(([key,value])=>{
-              return getDiffuserStoreOption(key,value);
-          })}
-        </Grid>
-      </Box>
+      <ThemeProvider theme={tableTheme}>
+        <Box sx={{ width: '100%', marginBottom: rowSpacing, marginLeft:'64px' }}>
+          <Grid
+            container
+            columns={numCols}
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={1}
+          >
+            {Object.entries(diffuserTable.store).map(([key,value])=>{
+                return getDiffuserStoreOption(key,value);
+            })}
+          </Grid>
+        </Box>
 
-      <Box sx={{ width: '100%', marginBottom: rowSpacing }}>
-        <Grid
-          container
-          columns={numCols}
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={1}
-        >
-          {diffuserTable.data.map((inputRow:any)=>{
-            console.log(inputRow);
-            return (
-              <InputRow
-                key         = {inputRow.id}
-                record      = {inputRow}
-                allowDelete = {(diffuserTable.data.length > 1)}
-              />
-            )
-          })}
+        <Box sx={{ width: '100%', marginBottom: rowSpacing }}>
+          <Grid
+            container
+            columns={numCols}
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={1}
+          >
+            {diffuserTable.data.map((inputRow:any)=>{
+              // console.log(inputRow);
+              return (
+                <InputRow
+                  key         = {inputRow.id}
+                  record      = {inputRow}
+                  allowDelete = {(diffuserTable.data.length > 1)}
+                />
+              )
+            })}
 
-        </Grid>
-      </Box>
-      
+          </Grid>
+        </Box>
         
-      <Box>
-        <Button 
-          variant = "contained"
-          onClick={addDiffuserInputRow}
-        >
-          Add Row
-        </Button>
-      </Box>
+          
+        <Box>
+          <Button 
+            variant = "contained"
+            onClick={addDiffuserInputRow}
+          >
+            Add Row
+          </Button>
+        </Box>
+      </ThemeProvider>
     </div>
   )
 }

@@ -8,7 +8,7 @@ const AppContext = createContext();
 export function AppWrapper({ children }) {
 
   /* Table Width */
-  const ambientWidth = 1900;
+  const ambientWidth = 1098;
   const numAmbientCols = 12;
 
   /* Project Name */

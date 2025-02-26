@@ -4,7 +4,8 @@ import { Box, Button, Grid, Select } from '@mui/material';
 import AmbientStoreOption from './AmbientStoreOption';
 
 
-const rowSpacing = 2;
+const rowSpacing = 0;
+const numCols = 11;
 
 type Props = {
   'id': number,
@@ -30,11 +31,12 @@ const AmbientStore: React.FC<Props> = ({id}) => {
       <Box sx={{ marginBottom: rowSpacing, width: ambientWidth }}>
         <Grid
           container
-          columns={numAmbientCols}
+          // columns={numAmbientCols}
           // direction="row"
           justifyContent="flex-start"
           // alignItems="center"
           spacing={1}
+          columns={numCols}
         >
           <Grid item xs={1}>
             Extrapolation (sfc)
@@ -132,6 +134,7 @@ const AmbientStore: React.FC<Props> = ({id}) => {
           justifyContent="flex-start"
           // alignItems="center"
           spacing={1}
+          columns={numCols}
         >
           <Grid item xs={1}>
             Extrapolation (btm)
@@ -229,6 +232,7 @@ const AmbientStore: React.FC<Props> = ({id}) => {
           justifyContent="flex-start"
           // alignItems="center"
           spacing={1}
+          columns={numCols}
         >
           <Grid item xs={1}>
             Measurement Unit
