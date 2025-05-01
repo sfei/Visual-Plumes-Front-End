@@ -216,6 +216,7 @@ const Ambient: React.FC<Props> = ({ }) => {
             <p><em>Far Field</em> values are only required if <em>Brooks Far Field</em> is selected from the <em>Model Configuration</em> in the <em>Model Selection</em> page.</p>
             <p>If any of the values are provided in the Time Series Table, then the corresponding value in the Ambient Table is not required.</p>
             <p>Time series data must have at least two rows. The first row defines the depth layers, listing the depth (or height) values by column. All subsequent rows constitute the values, with each row being the value after one time increment and each column the value at each depth layer. The <em>Time Increment</em>, <em>Depth or Height</em>, <em>Depth Units</em>, and <em>Measurement Units</em> for the Time Series table must be selected in the UI and are not determined by the time series file.</p>
+            <p>NOTE: Automatic unit conversion not supported for <i>mmho/cm</i>, <i>psu</i>, or <i>ly/hr</i></p>
           </Typography>
         </CardContent>
       </Card>

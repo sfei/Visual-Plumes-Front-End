@@ -1,7 +1,14 @@
 import * as React from 'react';
+// import convert from 'convert-units';
+// import convert from '../ConvertVP';
 import { useAppContext } from '@/context/state';
-import { Box, Button, Grid, Select } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 import AmbientStoreOption from './AmbientStoreOption';
+
+const convert = require('../ConvertVP');
+
+// import speed from 'convert-units/lib/definitions/speed';
 
 
 const rowSpacing = 0;
@@ -11,16 +18,88 @@ type Props = {
   'id': number,
 };
 
+const unsupportedUnits = ["mmho/cm", "psu", "ly/hr"];
+
 const AmbientStore: React.FC<Props> = ({id}) => {
   const {ambientWidth, numAmbientCols} = useAppContext();
   const {ambientStore, setAmbientStore, ambientInputTemplate} = useAppContext();
 
-  const updateAmbientStoreParam = (profileID:number, field:string, subfield:string, val:string) => {
-    console.log("updateAmbientStoreParam ambientStore value:");
-    console.log(ambientStore);
+  const [currField, setCurrField] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const showUnitSwitchWarning = () => {
+    return (
+      <Box>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Unsupported unit conversion"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Automatic conversion not supported for {currField}
+              {/* Automatic conversion not supported for */}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            {/* <Button onClick={handleClose} color="error"><ClearIcon/> No</Button> */}
+            <Button onClick={() => {handleClose()}} autoFocus color="success">
+              <CheckIcon/> OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    )
+  }
+
+  const updateAmbientStoreParam = (profileID:number, field:string, subfield:string, val:string) => {
+    // console.log("updateAmbientStoreParam ambientStore value:");
+    // console.log(ambientStore);
+
+    /* Get new ambient store */
     let newAmbientStore = { ...ambientStore};
+
+    /* Store old field value */
+    let old_unit_val = newAmbientStore.tabs[profileID].store[field][subfield];
+
+    /* Update ambient store value */
     newAmbientStore.tabs[profileID].store[field][subfield] = val;
+
+    /* Iterate through ambient store, convert appropriate values */
+    if (unsupportedUnits.includes(val) || unsupportedUnits.includes(old_unit_val)) {
+      if (unsupportedUnits.includes(val)) {
+        setCurrField(val);
+      } else if (unsupportedUnits.includes(old_unit_val)) {
+        setCurrField(old_unit_val);
+      }
+      handleOpen();
+    } else {
+      if (convert().possibilities().includes(old_unit_val)) {
+        if (convert().from(old_unit_val).possibilities().includes(val)) {
+          for (let i=0; i < newAmbientStore.tabs[profileID].data.length; i++) {
+            let currInputCellValue = newAmbientStore.tabs[profileID].data[i][field];
+            if (currInputCellValue !== "") {
+              newAmbientStore.tabs[profileID].data[i][field] = convert(currInputCellValue).from(old_unit_val).to(val);
+            }
+          }
+        }
+      }
+    }
+    
+
+    /* Set ambient store */
     setAmbientStore(newAmbientStore);
   }
 
@@ -250,7 +329,7 @@ const AmbientStore: React.FC<Props> = ({id}) => {
             profileID = {id}
             setParameterFunc  = {updateAmbientStoreParam}
             defaultVal = {"constant"}
-            optionVals = {["m/s","cm/s","kt","mph","ft/s"]}
+            optionVals = {["m/s","cm/s","kts","mph","ft/s"]}
             field = {'current_speed'}
             subfield = {'mu'}
             val = {ambientStore.tabs[id].store['current_speed']['mu']}
@@ -304,7 +383,7 @@ const AmbientStore: React.FC<Props> = ({id}) => {
             profileID = {id}
             setParameterFunc  = {updateAmbientStoreParam}
             defaultVal = {"m/s"}
-            optionVals = {["m/s","cm/s","ft/s","mph","kt"]}
+            optionVals = {["m/s","cm/s","ft/s","mph","kts"]}
             field = 'far_field_curr_speed'
             subfield = 'mu'
             val = {ambientStore.tabs[id].store['far_field_curr_speed']['mu']}
@@ -329,6 +408,7 @@ const AmbientStore: React.FC<Props> = ({id}) => {
           ></AmbientStoreOption>
         </Grid>
       </Box>
+      {showUnitSwitchWarning()}
       
     </div>
   )

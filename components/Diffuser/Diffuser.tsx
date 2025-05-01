@@ -29,6 +29,7 @@ const Diffuser: React.FC<Props> = (props) => {
               <p>If Time Series* data are supplied, whether in Diffuser or Ambient settings, the <em>Start Time</em>, <em>End Time</em>, and <em>Time Increment</em> must be provided. Valid values for <em>Start Time</em> begin at 0. <em>End Time</em> values must be positive and equal to or greater than the <em>Start Time</em>. The <em>Time Increment</em> must be a positive, nonzero value.</p>
               <p><em>Port Depth</em>, <em>Effluent Flow</em>, <em>Effluent Salinity</em>, <em>Effluent Tems</em>, and <em>Effluent Cone</em> may be defined in the Time Series table. If this is the case, these values are not required in the Diffuser Table.</p>
               <p>*Time Series data must have at least one valid row, with each subsequent row being the value after one time increment. The time increment and units for time series data must be supplied in the UI and are not needed to be written in the time series file.</p>
+              <p>NOTE: Automatic unit conversion not supported for <i>mmho/cm</i> or <i>psu</i></p>
             </Typography>
           </CardContent>
         </Card>

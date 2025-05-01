@@ -12,19 +12,20 @@
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
+    "convert-units": "^2.3.4",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
     "file-saver": "latest",
-    "next": "13.3.1",
+    "next": "13.5.1",
     "papaparse": "latest",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-ga4": "latest",
     "recharts": "latest",
     "recharts-to-png": "latest",
     "tailwindcss": "3.3.1",
-    "typescript": "5.0.4",
-    "react-ga4": "latest"
+    "typescript": "5.0.4"
   },
   "scripts": {
     "dev": "next dev -p 3001",

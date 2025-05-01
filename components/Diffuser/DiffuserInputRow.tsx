@@ -22,6 +22,7 @@ export interface SimpleDialogProps {
 const InputRow: React.FC<Props> = ({record, allowDelete}) => {
 
   const { diffuserTable, setDiffuserTable, diffuserInputTemplate } = useAppContext();
+  // const { diffuserUnitSwitcher, setDiffuserUnitSwitcher } = useAppContext();
 
   const deleteRow = (event:any) => {
     console.log("Removing diffuser row...");
@@ -33,6 +34,9 @@ const InputRow: React.FC<Props> = ({record, allowDelete}) => {
 
   const getInputCell = (key:string,value:any) => {
     if (key !== 'key' && key !== 'id') {
+      // if (key === diffuserUnitSwitcher['field']) {
+      //   value = 0;
+      // }
       return (
         <InputCell 
           recordId={record.id}

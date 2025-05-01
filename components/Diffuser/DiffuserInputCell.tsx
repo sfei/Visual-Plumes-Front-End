@@ -15,8 +15,6 @@ const InputCell: React.FC<Props> = ({recordId,field,val}) => {
   const {diffuserTable, setDiffuserTable, diffuserTimeSeries} = useAppContext();
 
   const updateInputVal = (event:any) => {
-    console.log("Update called!");
-    console.log(`Updating diffuser row ${recordId}, field ${field}, with value ${event.target.value}`);
     let newDiffuserTable = { ...diffuserTable };
     for (let i=0; i < newDiffuserTable.data.length; i++) {
       let currDiffuserRow = newDiffuserTable.data[i];

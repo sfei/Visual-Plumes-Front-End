@@ -55,6 +55,13 @@ export function AppWrapper({ children }) {
   const [reportEffectiveDillution, setReportEffectiveDillution] = React.useState(false); /* report_effective_dillution in model params */
   const [currentVectorAveraging, setCurrentVectorAveraging] = React.useState(false); /* current_vector_averaging in model params */
 
+  /* Structures for tracking recent unit value changes */
+  const diffuserUnitSwitcherParams = {
+    'field': null,
+    'old_unit': null,
+    'new_unit': null
+  }
+  const [diffuserUnitSwitcher, setDiffuserUnitSwitcher] = React.useState(diffuserUnitSwitcherParams);
 
   /* Diffuser Store */
   const diffuserStore = {
@@ -647,6 +654,10 @@ export function AppWrapper({ children }) {
     setCurrentVectorAveraging,
 
     /***** Diffuser Table *****/
+
+    /* Data structure used to track unit changes */
+    diffuserUnitSwitcher, 
+    setDiffuserUnitSwitcher,
 
     /* Diffuser table row values */
     diffuserRows,
